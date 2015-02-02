@@ -21,12 +21,11 @@ public class ConfigurationConstants {
         return "";
     }
 
-    private static String getFileName() {
+    public static String getFileName() {
         SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
-        String today = dateFormatter.format(new Date(System.currentTimeMillis()));
-        return "FIT_SQDF_VSB_TxReport_" + today + ".xlsx";
+        String yesterday = dateFormatter.format(new Date(System.currentTimeMillis() - ONE_DAY));
+        return "FIT_SQDF_VSB_TxReport_" + yesterday + ".xlsx";
     }
-
 
     // Configuration different for all profiles
     // Local configuration
