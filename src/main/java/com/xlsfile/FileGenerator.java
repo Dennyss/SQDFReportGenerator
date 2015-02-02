@@ -1,6 +1,6 @@
 package com.xlsfile;
 
-import com.configuration.Configuration;
+import com.configuration.ConfigurationConstants;
 import com.dto.ReportRow;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -17,7 +17,7 @@ import java.util.List;
 public class FileGenerator {
 
     public void generateFile(List<ReportRow> reportRows) {
-        try (FileOutputStream fileOut = new FileOutputStream(Configuration.FILE_PATH + Configuration.FILE_NAME)) {
+        try (FileOutputStream fileOut = new FileOutputStream(ConfigurationConstants.FILE_PATH + ConfigurationConstants.FILE_NAME)) {
             XSSFWorkbook workbook = new XSSFWorkbook();
             generateSheet(workbook, reportRows);
 

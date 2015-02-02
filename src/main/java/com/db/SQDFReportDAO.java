@@ -1,6 +1,6 @@
 package com.db;
 
-import com.configuration.Configuration;
+import com.configuration.ConfigurationConstants;
 import com.dto.ReportRow;
 
 import java.sql.*;
@@ -22,8 +22,8 @@ public class SQDFReportDAO {
         formatter.setTimeZone(TimeZone.getTimeZone("CST"));
 
         try {
-            Class.forName(Configuration.DB_DRIVER);
-            connection = DriverManager.getConnection(Configuration.DB_URL, Configuration.DB_USERNAME, Configuration.DB_PASSWORD);
+            Class.forName(ConfigurationConstants.DB_DRIVER);
+            connection = DriverManager.getConnection(ConfigurationConstants.DB_URL, ConfigurationConstants.DB_USERNAME, ConfigurationConstants.DB_PASSWORD);
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } catch (SQLException e) {
@@ -35,7 +35,7 @@ public class SQDFReportDAO {
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         try {
-            statement = connection.prepareStatement(Configuration.COUNT_QUERY);
+            statement = connection.prepareStatement(ConfigurationConstants.COUNT_QUERY);
             statement.setTimestamp(1, getStartTimestamp());
             statement.setTimestamp(2, getEndTimestamp());
             resultSet = statement.executeQuery();
@@ -53,13 +53,12 @@ public class SQDFReportDAO {
         return 0;
     }
 
-
     public List<ReportRow> retrieveReportData() {
         List<ReportRow> reportRows = new ArrayList<>();
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         try {
-            statement = connection.prepareStatement(Configuration.DATA_QUERY);
+            statement = connection.prepareStatement(ConfigurationConstants.DATA_QUERY);
             statement.setTimestamp(1, getStartTimestamp());
             statement.setTimestamp(2, getEndTimestamp());
             resultSet = statement.executeQuery();
@@ -72,9 +71,6 @@ public class SQDFReportDAO {
                 reportRow.setServiceType(resultSet.getString(4));
                 reportRows.add(reportRow);
                 i++;
-                if(i % 1000 == 0){
-                    System.out.println("Read " + i + " records");
-                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -89,23 +85,23 @@ public class SQDFReportDAO {
     }
 
     private Timestamp getStartTimestamp() throws ParseException {
-        java.util.Date date = formatter.parse(getToday() + " 05:00:00 AM");
+        java.util.Date date = formatter.parse(getYesterday() + " 05:00:00 AM");
         return new Timestamp(date.getTime());
     }
 
     private Timestamp getEndTimestamp() throws ParseException {
-        java.util.Date date = formatter.parse(getTomorrow() + " 05:00:00 AM");
+        java.util.Date date = formatter.parse(getToday() + " 05:00:00 AM");
         return new Timestamp(date.getTime());
+    }
+
+    private String getYesterday() {
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-MMM-yyyy");
+        return dateFormatter.format(new Date(System.currentTimeMillis() - ConfigurationConstants.ONE_DAY));
     }
 
     private String getToday() {
         SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-MMM-yyyy");
         return dateFormatter.format(new Date(System.currentTimeMillis()));
-    }
-
-    private String getTomorrow() {
-        SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-MMM-yyyy");
-        return dateFormatter.format(new Date(System.currentTimeMillis() + 86400000));
     }
 
     public void closeConnection() {

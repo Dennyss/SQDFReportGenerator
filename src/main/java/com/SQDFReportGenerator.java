@@ -15,7 +15,6 @@ public class SQDFReportGenerator {
     public static void main(String args[]){
         SQDFReportDAO sqdfReportDAO = new SQDFReportDAO();
         int recordsNumber = sqdfReportDAO.getCount();
-        System.out.println("Total rows count: " + recordsNumber);
 
         List<ReportRow> reportRows = sqdfReportDAO.retrieveReportData();
         sqdfReportDAO.closeConnection();

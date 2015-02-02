@@ -1,6 +1,6 @@
 package com.email;
 
-import com.configuration.Configuration;
+import com.configuration.ConfigurationConstants;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
@@ -31,7 +31,7 @@ public class EmailSender {
         session = Session.getDefaultInstance(props,
                 new javax.mail.Authenticator() {
                     protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication(Configuration.MY_EMAIL_ADDRESS, Configuration.MY_EMAIL_PASSWORD);
+                        return new PasswordAuthentication(ConfigurationConstants.MY_EMAIL_ADDRESS, ConfigurationConstants.MY_EMAIL_PASSWORD);
                     }
                 });
     }
@@ -39,21 +39,21 @@ public class EmailSender {
     public void sendEmail(int recordsNumber) {
         try {
             Message message = new MimeMessage(session);
-            message.setFrom(new InternetAddress(Configuration.MY_EMAIL_ADDRESS));
-            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(Configuration.TO_RECIPIENTS_LIST));
-            message.setRecipients(Message.RecipientType.CC, InternetAddress.parse(Configuration.CC_RECIPIENTS_LIST));
+            message.setFrom(new InternetAddress(ConfigurationConstants.MY_EMAIL_ADDRESS));
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(ConfigurationConstants.TO_RECIPIENTS_LIST));
+            message.setRecipients(Message.RecipientType.CC, InternetAddress.parse(ConfigurationConstants.CC_RECIPIENTS_LIST));
 
             message.setSubject("SQDF transactions report for " + getToday());
 
             MimeBodyPart messageBodyPart = new MimeBodyPart();
-            messageBodyPart.setText(Configuration.getMailBody(recordsNumber));
+            messageBodyPart.setText(ConfigurationConstants.getMailBody(recordsNumber));
             Multipart multipart = new MimeMultipart();
             multipart.addBodyPart(messageBodyPart);
             messageBodyPart = new MimeBodyPart();
-            DataSource source = new FileDataSource(Configuration.FILE_PATH + Configuration.FILE_NAME);
+            DataSource source = new FileDataSource(ConfigurationConstants.FILE_PATH + ConfigurationConstants.FILE_NAME);
 
             messageBodyPart.setDataHandler(new DataHandler(source));
-            messageBodyPart.setFileName(Configuration.FILE_NAME);
+            messageBodyPart.setFileName(ConfigurationConstants.FILE_NAME);
             multipart.addBodyPart(messageBodyPart);
             message.setContent(multipart);
             Transport.send(message);
