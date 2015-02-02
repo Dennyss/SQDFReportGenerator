@@ -1,13 +1,10 @@
 package com;
 
-import com.configuration.Configuration;
 import com.db.SQDFReportDAO;
 import com.dto.ReportRow;
 import com.email.EmailSender;
 import com.xlsfile.FileGenerator;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -24,15 +21,10 @@ public class SQDFReportGenerator {
         sqdfReportDAO.closeConnection();
 
         FileGenerator fileGenerator = new FileGenerator();
-        fileGenerator.generateFile(reportRows, Configuration.getFileName(getToday()));
+        fileGenerator.generateFile(reportRows);
 
-        //int recordsNumber = 72790;
         EmailSender emailSender = new EmailSender();
-        emailSender.sendEmail(recordsNumber, Configuration.getFileName(getToday()));
+        emailSender.sendEmail(recordsNumber);
     }
 
-    private static String getToday() {
-        SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
-        return dateFormatter.format(new Date(System.currentTimeMillis()));
-    }
 }

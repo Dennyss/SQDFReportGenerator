@@ -16,8 +16,8 @@ import java.util.List;
  */
 public class FileGenerator {
 
-    public void generateFile(List<ReportRow> reportRows, String fileName) {
-        try (FileOutputStream fileOut = new FileOutputStream(Configuration.FILE_PATH + fileName)) {
+    public void generateFile(List<ReportRow> reportRows) {
+        try (FileOutputStream fileOut = new FileOutputStream(Configuration.FILE_PATH + Configuration.FILE_NAME)) {
             XSSFWorkbook workbook = new XSSFWorkbook();
             generateSheet(workbook, reportRows);
 

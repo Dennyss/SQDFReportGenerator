@@ -18,8 +18,9 @@ import java.util.Properties;
  * Created by Denys Kovalenko on 12/30/2014.
  */
 public class EmailSender {
+    private Session session;
 
-    public void sendEmail(int recordsNumber, String fileName) {
+    public EmailSender() {
         Properties props = new Properties();
         props.put("mail.smtp.host", "smtp.gmail.com");
         props.put("mail.smtp.socketFactory.port", "465");
@@ -27,13 +28,15 @@ public class EmailSender {
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.port", "465");
 
-        Session session = Session.getDefaultInstance(props,
+        session = Session.getDefaultInstance(props,
                 new javax.mail.Authenticator() {
                     protected PasswordAuthentication getPasswordAuthentication() {
                         return new PasswordAuthentication(Configuration.MY_EMAIL_ADDRESS, Configuration.MY_EMAIL_PASSWORD);
                     }
                 });
+    }
 
+    public void sendEmail(int recordsNumber) {
         try {
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress(Configuration.MY_EMAIL_ADDRESS));
@@ -47,10 +50,10 @@ public class EmailSender {
             Multipart multipart = new MimeMultipart();
             multipart.addBodyPart(messageBodyPart);
             messageBodyPart = new MimeBodyPart();
-            DataSource source = new FileDataSource(Configuration.FILE_PATH + fileName);
+            DataSource source = new FileDataSource(Configuration.FILE_PATH + Configuration.FILE_NAME);
 
             messageBodyPart.setDataHandler(new DataHandler(source));
-            messageBodyPart.setFileName(fileName);
+            messageBodyPart.setFileName(Configuration.FILE_NAME);
             multipart.addBodyPart(messageBodyPart);
             message.setContent(multipart);
             Transport.send(message);

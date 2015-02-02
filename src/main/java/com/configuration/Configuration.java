@@ -1,5 +1,8 @@
 package com.configuration;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * Created by Denys Kovalenko on 2/2/2015.
  */
@@ -11,12 +14,15 @@ public class Configuration {
     public static final String MY_EMAIL_PASSWORD = "";
     public static final String TO_RECIPIENTS_LIST = "";
     public static final String CC_RECIPIENTS_LIST = "";
+    public static final String FILE_NAME = getFileName();
 
     public static String getMailBody(int recordsNumber) {
         return "";
     }
 
-    public static String getFileName(String today) {
+    private static String getFileName() {
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
+        String today = dateFormatter.format(new Date(System.currentTimeMillis()));
         return "FIT_SQDF_VSB_TxReport_" + today + ".xlsx";
     }
 
