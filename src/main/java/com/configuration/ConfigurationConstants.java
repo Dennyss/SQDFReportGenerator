@@ -15,6 +15,7 @@ public class ConfigurationConstants {
     public static final String TO_RECIPIENTS_LIST = "";
     public static final String CC_RECIPIENTS_LIST = "";
     public static final String FILE_NAME = getFileName();
+    public static final int ONE_DAY = 86400000;
 
     public static String getMailBody(int recordsNumber) {
         return "";
@@ -44,3 +45,4 @@ public class ConfigurationConstants {
     //public static final String DB_USERNAME = "";
     //public static final String DB_PASSWORD = "";
 }
+
