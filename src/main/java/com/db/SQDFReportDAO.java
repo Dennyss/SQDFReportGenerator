@@ -19,7 +19,7 @@ public class SQDFReportDAO {
     private SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy hh:mm:ss aaa");
 
     public SQDFReportDAO() {
-        formatter.setTimeZone(TimeZone.getTimeZone("CST"));
+        formatter.setTimeZone(TimeZone.getTimeZone("GMT"));
 
         try {
             Class.forName(ConfigurationConstants.DB_DRIVER);
